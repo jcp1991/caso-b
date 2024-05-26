@@ -36,11 +36,9 @@ pipeline {
         stage('Cobertura (Coverage)') {
             steps {
                 bat '''
-                    set PYTHONPATH=%WORKSPACE%
-                    coverage run -m pytest
-                    coverage report
-                    coverage html
-                '''
+                    coverage run --branch --source=app --omit=app\\__init__.py;app\apy.py -m pytest test\unit
+					'''
+                    cobertura coberturaReportFile: 'coverage.xml', conditionalCoverageTargets: '100,90,80', lineCoverageTargets: '100,95,85', onlyStable: false
             }
         }
         stage('Paralelo') {
