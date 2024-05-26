@@ -24,9 +24,8 @@ pipeline {
             steps {
                 bat '''
                     bandit --exit-zero -r . -f custom -o bandit.out --severity-level medium
-					exit 0
                 '''
-					recordIssues tools: [bandit(pattern: 'bandit.out')],  qualityGates: [[threshold: 2, type: 'TOTAL', unstable: true],  [threshold: 4, type: 'TOTAL', unstable: false]]
+					catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') { recordIssues tools: [bandit(pattern: 'bandit.out')],  qualityGates: [[threshold: 2, type: 'TOTAL', unstable: true],  [threshold: 4, type: 'TOTAL', unstable: false]]}
             }
         }
         stage('Cobertura (Coverage)') {
