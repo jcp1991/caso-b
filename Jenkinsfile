@@ -1,11 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Inicio') {
-            steps {
-                echo "Este código es de Jose Coca"
-            }
-        }
         stage('Get Code') {
             steps {
                 git 'https://github.com/jcp1991/caso-b.git'
@@ -25,7 +20,7 @@ pipeline {
 					recordIssues tools: [flake8(name: 'Flake8', pattern: 'flake8.out')], qualityGates : [[threshold: 10, type: 'TOTAL', unstable: true], [threshold: 11, type: 'TOTAL', unstable: false]]
             }
         }
-        stage('Seguridad') {
+        stage('Security') {
             steps {
                 bat '''
                     bandit --exit-zero -r . -f custom -o bandit.out --severity-level medium 
