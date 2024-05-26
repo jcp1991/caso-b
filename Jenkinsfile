@@ -33,7 +33,7 @@ pipeline {
                 bat '''
                     coverage run --source=app --omit=app\\\\__init__.py;app\\apy.py -m pytest test\\unit
 					'''
-                    cobertura coberturaReportFile: 'coverage.xml', conditionalCoverageTargets: '100,90,80', lineCoverageTargets: '100,95,85', onlyStable: false
+                    catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {cobertura coberturaReportFile: 'coverage.xml', conditionalCoverageTargets: '100,90,80', lineCoverageTargets: '100,95,85', onlyStable: false}
             }
         }
         stage('Paralelo') {
