@@ -42,7 +42,7 @@ pipeline {
                 bat 'C:\\Users\\jose.coca\\Downloads\\instaladores\\apache-jmeter-5.6.3\\apache-jmeter-5.6.3\\bin\\jmeter\\flask.jmk -f -l flask.jtl'
 				perfReport sourceDataFiles : 'flask.jtl'
             }
-        
+        }
         stage('Paralelo') {
             parallel {
                 stage('Unit') {
