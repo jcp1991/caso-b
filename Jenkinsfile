@@ -24,7 +24,7 @@ pipeline {
             steps {
 					catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                 bat '''
-                    bandit --exit-zero -r . -f json -o bandit.out --severity-level medium --msg-template "{abspath}:{line}: {severity}: {test_id}: {msg}"
+                    bandit --exit-zero -r . -f json -o bandit.out --severity-level medium --msg-template "{abspath}:{line}: {test_id}: {msg}"
                 '''
 					 recordIssues tools: [bandit(pattern: 'bandit.out')],  qualityGates: [[threshold: 2, type: 'TOTAL', unstable: true],  [threshold: 4, type: 'TOTAL', unstable: false]]}
             }
