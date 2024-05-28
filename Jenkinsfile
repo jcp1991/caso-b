@@ -37,12 +37,6 @@ pipeline {
                     catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {cobertura coberturaReportFile: 'coverage.xml', conditionalCoverageTargets: '100,90,80', lineCoverageTargets: '100,95,85', onlyStable: false}
             }
         }
-		stage('Jmeter (Perfomance)') {
-            steps {
-                bat 'C:\\Users\\jose.coca\\Downloads\\instaladores\\apache-jmeter-5.6.3\\apache-jmeter-5.6.3\\bin\\jmeter -n -t test\\jmeter\\flask.jmx -f -l flask.jtl'
-				perfReport sourceDataFiles : 'flask.jtl'
-            }
-        }
         stage('Paralelo') {
             parallel {
                 stage('Unit') {
@@ -68,6 +62,13 @@ pipeline {
                 }
             }
         }
-    }
+		stage('Jmeter (Perfomance)') {
+            steps {
+                bat 'C:\\Users\\jose.coca\\Downloads\\instaladores\\apache-jmeter-5.6.3\\apache-jmeter-5.6.3\\bin\\jmeter -n -t test\\jmeter\\flask.jmx -f -l flask.jtl'
+				perfReport sourceDataFiles : 'flask.jtl'
+            }
+        }
+	
+	}
 }
 
