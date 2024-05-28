@@ -39,7 +39,7 @@ pipeline {
         }
 		stage('Jmeter (Perfomance)') {
             steps {
-                bat 'C:\\Users\\jose.coca\\Downloads\\instaladores\\apache-jmeter-5.6.3\\apache-jmeter-5.6.3\\bin\\jmeter -n -t flask.jmx -f -l flask.jtl'
+                bat 'C:\\Users\\jose.coca\\Downloads\\instaladores\\apache-jmeter-5.6.3\\apache-jmeter-5.6.3\\bin\\jmeter -n -t test\\jmeter\\flask.jmx -f -l flask.jtl'
 				perfReport sourceDataFiles : 'flask.jtl'
             }
         }
