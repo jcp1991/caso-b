@@ -54,7 +54,8 @@ pipeline {
                             set FLASK_APP=app\\api.py
                             start flask run
                             start java -jar C:\\Users\\jose.coca\\Downloads\\instaladores\\wiremock-standalone-3.5.4.jar --port 9090 --root-dir test\\wiremock
-                            set PYTHONPATH=.
+                            timeout /T 12
+							set PYTHONPATH=.
                             pytest test\\rest
                             pytest test\\rest --junitxml=rest-results.xml
                         '''
@@ -64,11 +65,6 @@ pipeline {
         }
 		stage('Jmeter (Perfomance)') {
             steps {
-				bat'''
-						set PYTHONPATH=%WORKSPACE%
-                        set FLASK_APP=app\\api.py
-                        start flask run
-					'''
                 bat 'C:\\Users\\jose.coca\\Downloads\\instaladores\\apache-jmeter-5.6.3\\apache-jmeter-5.6.3\\bin\\jmeter -n -t test\\jmeter\\flask.jmx -f -l flask.jtl'
 				perfReport sourceDataFiles : 'flask.jtl'
             }
