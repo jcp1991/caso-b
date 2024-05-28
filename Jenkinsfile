@@ -64,6 +64,11 @@ pipeline {
         }
 		stage('Jmeter (Perfomance)') {
             steps {
+				bat'''
+						set PYTHONPATH=%WORKSPACE%
+                        set FLASK_APP=app\\api.py
+                        start flask run
+					'''
                 bat 'C:\\Users\\jose.coca\\Downloads\\instaladores\\apache-jmeter-5.6.3\\apache-jmeter-5.6.3\\bin\\jmeter -n -t test\\jmeter\\flask.jmx -f -l flask.jtl'
 				perfReport sourceDataFiles : 'flask.jtl'
             }
