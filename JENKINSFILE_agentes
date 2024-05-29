@@ -50,7 +50,7 @@ pipeline {
         stage('Paralelo') {
             parallel {
                 stage('Unit') {
-                    agent { label 'win-agent2' }
+                    agent { label 'win-agen2' }
                     steps {
                         bat 'whoami'
                         bat 'hostname'
@@ -63,7 +63,7 @@ pipeline {
                     }
                 }
                 stage('Service') {
-                    agent { label 'win-agent2' }
+                    agent { label 'win-agen2' }
                     steps {
                         bat 'whoami'
                         bat 'hostname'
@@ -80,7 +80,7 @@ pipeline {
                     }
                 }
                 stage('Jmeter (Performance)') {
-                    agent { label 'win-agent2' }
+                    agent { label 'win-agen2' }
                     steps {
                         bat 'whoami'
                         bat 'hostname'
@@ -94,7 +94,7 @@ pipeline {
             }
         }
         stage('Cobertura (Coverage)') {
-            agent { label 'win-agent2' }
+            agent { label 'win-agen2' }
             steps {
                 bat 'whoami'
                 bat 'hostname'
