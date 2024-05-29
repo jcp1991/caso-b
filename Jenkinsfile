@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Get Code') {
             steps {
-                git 'https://github.com/jcp1991/caso-b.git'
+				git branch: 'feature_fix_coverage', url: 'https://github.com/jcp1991/caso-b.git'
             }
         }
         stage('Print Workspace') {
@@ -64,7 +64,7 @@ pipeline {
 							coverage xml -o coverage.xml
 					'''
 					catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-						cobertura coberturaReportFile: 'coverage.xml', conditionalCoverageTargets: '90,85,80', lineCoverageTargets: '95,85,80', onlyStable: false
+						cobertura coberturaReportFile: 'coverage.xml', conditionalCoverageTargets: '100,82,90', lineCoverageTargets: '100,85,95', onlyStable: false
                 }
             }
         }
