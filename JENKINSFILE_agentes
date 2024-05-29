@@ -25,11 +25,11 @@ pipeline {
                 bat 'whoami'
                 bat 'hostname'
                 echo "El espacio de trabajo es: ${WORKSPACE}"
-                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE'){
-					bat '''
-                    flake8 --exit-zero --format=pylint app >flake8.out
-					'''
-					recordIssues tools: [flake8(name: 'Flake8', pattern: 'flake8.out')], qualityGates : [[threshold: 8, type: 'TOTAL', unstable: true], [threshold: 10, type: 'TOTAL', unhealthy: true]]}
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                    bat '''
+                        flake8 --exit-zero --format=pylint app >flake8.out
+                    '''
+                    recordIssues tools: [flake8(name: 'Flake8', pattern: 'flake8.out')], qualityGates: [[threshold: 8, type: 'TOTAL', unstable: true], [threshold: 10, type: 'TOTAL', unhealthy: true]]
                 }
             }
         }
@@ -40,10 +40,10 @@ pipeline {
                 bat 'hostname'
                 echo "El espacio de trabajo es: ${WORKSPACE}"
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-					bat '''
+                    bat '''
                         bandit --exit-zero -r . -f custom -o bandit.out --severity-level medium --msg-template "{abspath}:{line}: [{test_id}] {msg}"
                     '''
-					recordIssues tools: [pyLint(name: 'Bandit', pattern: 'bandit.out')],  qualityGates: [[threshold: 2, type: 'TOTAL', unstable: true], [threshold: 4, type: 'TOTAL', unstable: false]]}
+                    recordIssues tools: [pyLint(name: 'Bandit', pattern: 'bandit.out')], qualityGates: [[threshold: 2, type: 'TOTAL', unstable: true], [threshold: 4, type: 'TOTAL', unstable: false]]
                 }
             }
         }
@@ -53,8 +53,8 @@ pipeline {
                     agent { label 'win-agent2' }
                     steps {
                         bat 'whoami'
-						bat 'hostname'
-						echo "El espacio de trabajo es: ${WORKSPACE}"
+                        bat 'hostname'
+                        echo "El espacio de trabajo es: ${WORKSPACE}"
                         bat '''
                             set PYTHONPATH=%WORKSPACE%
                             pytest test\\unit
@@ -66,8 +66,8 @@ pipeline {
                     agent { label 'win-agent2' }
                     steps {
                         bat 'whoami'
-						bat 'hostname'
-						echo "El espacio de trabajo es: ${WORKSPACE}"
+                        bat 'hostname'
+                        echo "El espacio de trabajo es: ${WORKSPACE}"
                         bat '''
                             set FLASK_APP=app\\api.py
                             start flask run
@@ -83,8 +83,8 @@ pipeline {
                     agent { label 'win-agent2' }
                     steps {
                         bat 'whoami'
-						bat 'hostname'
-						echo "El espacio de trabajo es: ${WORKSPACE}"
+                        bat 'hostname'
+                        echo "El espacio de trabajo es: ${WORKSPACE}"
                         bat '''
                             C:\\Users\\jose.coca\\Downloads\\instaladores\\apache-jmeter-5.6.3\\apache-jmeter-5.6.3\\bin\\jmeter -n -t test\\jmeter\\flask.jmx -f -l flask.jtl
                         '''
@@ -96,7 +96,7 @@ pipeline {
         stage('Cobertura (Coverage)') {
             agent { label 'win-agent2' }
             steps {
-				bat 'whoami'
+                bat 'whoami'
                 bat 'hostname'
                 echo "El espacio de trabajo es: ${WORKSPACE}"
                 bat '''
@@ -106,7 +106,7 @@ pipeline {
                 '''
                 catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                     cobertura coberturaReportFile: 'coverage.xml', conditionalCoverageTargets: '90,85,80', lineCoverageTargets: '95,85,80', onlyStable: false
-               }
+                }
             }
         }
     }
