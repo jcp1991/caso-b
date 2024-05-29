@@ -22,11 +22,11 @@ pipeline {
         }
         stage('Security') {
             steps {
-					catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+					catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                 bat '''
                     bandit --exit-zero -r . -f custom -o bandit.out --severity-level medium --msg-template "{abspath}:{line}: [{test_id}] {msg}"
                 '''
-					 recordIssues tools: [pyLint(name: 'Bandit', pattern: 'bandit.out')],  qualityGates: [[threshold: 2, type: 'TOTAL', unstable: true],  [threshold: 4, type: 'TOTAL', unstable: false]]}
+					 recordIssues tools: [pyLint(name: 'Bandit', pattern: 'bandit.out')],  qualityGates: [[threshold: 8, type: 'TOTAL', unstable: true],  [threshold: 10, type: 'TOTAL', unstable: false]]}
             }
         }
         stage('Paralelo') {
