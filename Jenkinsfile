@@ -29,14 +29,6 @@ pipeline {
 					 recordIssues tools: [pyLint(name: 'Bandit', pattern: 'bandit.out')],  qualityGates: [[threshold: 2, type: 'TOTAL', unstable: true],  [threshold: 4, type: 'TOTAL', unstable: false]]}
             }
         }
-        stage('Cobertura (Coverage)') {
-            steps {
-                bat '''
-                    coverage run --source=app --omit=app\\\\__init__.py;app\\apy.py -m pytest test\\unit
-					'''
-                    catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {cobertura coberturaReportFile: 'coverage.xml', conditionalCoverageTargets: '100,90,80', lineCoverageTargets: '100,95,85', onlyStable: false}
-            }
-        }
         stage('Paralelo') {
             parallel {
                 stage('Unit') {
@@ -63,6 +55,19 @@ pipeline {
                 }
             }
         }
+				stage('Cobertura (Coverage)') {
+					steps {
+						bat '''
+							coverage combine
+							coverage report
+							coverage xml -o coverage.xml
+					'''
+					catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+						cobertura coberturaReportFile: 'coverage.xml', conditionalCoverageTargets: '100,90,80', lineCoverageTargets: '100,95,85', onlyStable: false
+                }
+            }
+        }
+		
 		stage('Jmeter (Perfomance)') {
             steps {
                 bat 'C:\\Users\\jose.coca\\Downloads\\instaladores\\apache-jmeter-5.6.3\\apache-jmeter-5.6.3\\bin\\jmeter -n -t test\\jmeter\\flask.jmx -f -l flask.jtl'
