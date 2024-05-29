@@ -4,8 +4,8 @@ pipeline {
         stage('Get Code') {
             agent { label 'win-agent' }
             steps {
-                whoami
-                hostname
+                bat 'whoami'
+                bat 'hostname'
                 echo "El espacio de trabajo es: ${WORKSPACE}"
                 git 'https://github.com/jcp1991/caso-b.git'
             }
@@ -13,8 +13,8 @@ pipeline {
         stage('Print Workspace') {
             agent { label 'win-agent' }
             steps {
-                whoami
-                hostname
+                bat 'whoami'
+                bat 'hostname'
                 echo "El espacio de trabajo es: ${WORKSPACE}"
                 bat 'dir'
             }
