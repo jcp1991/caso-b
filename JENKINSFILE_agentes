@@ -96,16 +96,18 @@ pipeline {
         stage('Cobertura (Coverage)') {
             agent { label 'win-agent2' }
             steps {
-                bat 'whoami'
-				bat 'hostname'
-				echo "El espacio de trabajo es: ${WORKSPACE}"
+				bat 'whoami'
+                bat 'hostname'
+                echo "El espacio de trabajo es: ${WORKSPACE}"
                 bat '''
-					coverage combine
-					coverage report
-					coverage xml -o coverage.xml
-					'''
-					catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-						cobertura coberturaReportFile: 'coverage.xml', conditionalCoverageTargets: '90,85,80', lineCoverageTargets: '95,85,80', onlyStable: false
-                }
-			}
-		}
+                    coverage combine
+                    coverage report
+                    coverage xml -o coverage.xml
+                '''
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                    cobertura coberturaReportFile: 'coverage.xml', conditionalCoverageTargets: '90,85,80', lineCoverageTargets: '95,85,80', onlyStable: false
+               }
+            }
+        }
+    }
+}
