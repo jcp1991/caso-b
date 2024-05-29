@@ -14,19 +14,20 @@ pipeline {
         }
         stage('Static') {
             steps {
+					catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE'){
                 bat '''
                     flake8 --exit-zero --format=pylint app >flake8.out
 					'''
-					recordIssues tools: [flake8(name: 'Flake8', pattern: 'flake8.out')], qualityGates : [[threshold: 10, type: 'TOTAL', unstable: true], [threshold: 11, type: 'TOTAL', unstable: false]]
+					recordIssues tools: [flake8(name: 'Flake8', pattern: 'flake8.out')], qualityGates : [[threshold: 8, type: 'TOTAL', unstable: true], [threshold: 10, type: 'TOTAL', unhealthy: true]]}
             }
         }
         stage('Security') {
             steps {
-					catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+					catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                 bat '''
                     bandit --exit-zero -r . -f custom -o bandit.out --severity-level medium --msg-template "{abspath}:{line}: [{test_id}] {msg}"
                 '''
-					 recordIssues tools: [pyLint(name: 'Bandit', pattern: 'bandit.out')],  qualityGates: [[threshold: 8, type: 'TOTAL', unstable: true],  [threshold: 10, type: 'TOTAL', unstable: false]]}
+					 recordIssues tools: [pyLint(name: 'Bandit', pattern: 'bandit.out')],  qualityGates: [[threshold: 2, type: 'TOTAL', unstable: true],  [threshold: 4, type: 'TOTAL', unstable: false]]}
             }
         }
         stage('Paralelo') {
