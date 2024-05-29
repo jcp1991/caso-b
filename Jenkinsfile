@@ -62,6 +62,7 @@ pipeline {
 							coverage combine
 							coverage report
 							coverage xml -o coverage.xml
+							coverage run --branch --source=app --omit=app\\__init__.py,app\\api.py -m pytest test\\unit
 					'''
 					catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
 						cobertura coberturaReportFile: 'coverage.xml', conditionalCoverageTargets: '100,100,100', lineCoverageTargets: '100,100,100', onlyStable: false
