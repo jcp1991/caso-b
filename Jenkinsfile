@@ -59,7 +59,6 @@ pipeline {
 				stage('Cobertura (Coverage)') {
 					steps {
 						bat '''
-							coverage combine
 							coverage report
 							coverage xml -o coverage.xml --omit=app\\__init__.py,app\\api.py
 							coverage html --directory=coverage_html_report --omit=app\\__init__.py,app\\api.py
