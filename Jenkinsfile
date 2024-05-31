@@ -58,6 +58,14 @@ pipeline {
                 }
             }
         }
+		
+		stage('Jmeter (Perfomance)') {
+            steps {
+                bat 'C:\\Users\\jose.coca\\Downloads\\instaladores\\apache-jmeter-5.6.3\\apache-jmeter-5.6.3\\bin\\jmeter -n -t test\\jmeter\\flask.jmx -f -l flask.jtl'
+                perfReport sourceDataFiles: 'flask.jtl'
+            }
+        }
+		
         stage('Cobertura (Coverage)') {
             steps {
                 bat '''
@@ -68,12 +76,6 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                     cobertura coberturaReportFile: 'coverage.xml', conditionalCoverageTargets: '100,100,100', lineCoverageTargets: '100,100,100', onlyStable: false
                 }
-            }
-        }
-        stage('Jmeter (Perfomance)') {
-            steps {
-                bat 'C:\\Users\\jose.coca\\Downloads\\instaladores\\apache-jmeter-5.6.3\\apache-jmeter-5.6.3\\bin\\jmeter -n -t test\\jmeter\\flask.jmx -f -l flask.jtl'
-                perfReport sourceDataFiles: 'flask.jtl'
             }
         }
     }
