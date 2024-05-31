@@ -76,13 +76,10 @@ pipeline {
 				perfReport sourceDataFiles : 'flask.jtl'
             }
         }
-	
-	}
-	post {
+    }
+    post {
         always {
             cleanWs()
         }
     }
 }
-
-
